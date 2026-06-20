@@ -7,6 +7,7 @@ Author: Wiktor Stojek
 
 main()
 {
+    /* print the classic greeting, no newline */
     printf("Hello, world!");
 }
 /*

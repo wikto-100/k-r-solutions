@@ -10,6 +10,7 @@ int main()
     int c;
     while ((c = getchar()) != EOF)
     {
+        /* placeholder: input is consumed but no bracket-matching logic exists yet */
         // unmatched parenths
         // im leaving this one out for now, will come back later
     }

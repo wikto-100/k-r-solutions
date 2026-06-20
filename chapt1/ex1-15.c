@@ -6,6 +6,7 @@ Author: Wiktor Stojek
 #include <stdio.h>
 /* print Fahrenheit-Celsius table
 for fahr = 0, 20, ..., 300; floating-point version */
+/* extracted the Fahrenheit-to-Celsius formula into its own function */
 float conv (float fahr){
     return (5.0 / 9.0) * (fahr - 32.0);
 }

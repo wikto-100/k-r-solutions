@@ -7,6 +7,7 @@ Author: Wiktor Stojek
 
 int main()
 {
+    /* relational expression evaluates to 1 (true) or 0 (false) */
     int c = getchar() != EOF;
     printf("%d\n", c);
 }

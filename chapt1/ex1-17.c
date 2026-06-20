@@ -14,6 +14,7 @@ int main()
 {
 
     size_t bufsize = 128;
+    /* POSIX getline() grows buffer/bufsize itself as needed, unlike K&R's hand-rolled version */
     char *buffer = (char *)malloc(bufsize);
     ssize_t llen;
     while ((llen = getline(&buffer, &bufsize, stdin)) != EOF)

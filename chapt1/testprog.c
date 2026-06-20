@@ -1,3 +1,7 @@
+/*
+test fixture with tricky comment/string/quote/escape cases, used to exercise ex1-23's comment stripper
+Author: Wiktor Stojek
+*/
 #include <stdio.h>
 
 int main(void)

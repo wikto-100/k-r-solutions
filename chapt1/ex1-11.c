@@ -16,14 +16,18 @@ int main()
     nl = nw = nc = 0;
     while ((c = getchar()) != EOF)
     {
-        ++nc;
+        ++nc; /* count all characters */
         if (c == '\n')
-            ++nl;
-        if (c == '\t' || c == ' ' || c == '\n')
+            ++nl; /* count newlines */
+        if (c == '\t' || c == ' ' || c == '\n') // ignore whitespace 
+        // change state
             state = OUT;
         else if (state == OUT)
         {
-            ++nw;
+            /* a word occurs whenever there is
+               a transition from whitespace to non-whitespace
+            */
+            ++nw; /*count words*/
             state = IN;
         }
     }

@@ -21,7 +21,7 @@ int main()
         }
         else if (c == '\t')
         {
-
+            /* number of blanks needed to reach the next tab stop, n columns apart */
             spaces = n - ((col - 1) % n);
             while (spaces-- > 0)
             {

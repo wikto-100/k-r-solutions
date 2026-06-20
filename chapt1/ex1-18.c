@@ -13,6 +13,7 @@ int getline_tr(char line[], int lim)
     for (len = 0; len < (lim - 1) && ((c = getchar()) != EOF) && (c != '\n'); len++)
         line[len] = c;
 
+    /* shrink len back past any trailing blanks/tabs, effectively trimming them */
     while ((len > 0) && (line[len - 1] == '\t' || line[len - 1] == ' '))
     {
         len--;
@@ -34,6 +35,7 @@ int main()
     int len = 0;
     while (len = getline_tr(line, 128))
     {
+        /* nothing left but the newline means the line was entirely blank: drop it */
         if (line[len - 1] == '\n' && len == 1)
         {
             printf("Line deleted\n");

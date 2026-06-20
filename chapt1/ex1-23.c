@@ -4,22 +4,23 @@ quoted strings and character constants correctly (comments don't nest).
 Author: Wiktor Stojek
 */
 #include <stdio.h>
-#define PRINT 0
-#define SLASH 1
-#define SLCOMMENT 2
-#define QUOTE 3
-#define MLCOMMENT 4
-#define CHAR 5
+#define PRINT 0     /* normal code: pass characters through */
+#define SLASH 1     /* just saw a single '/', deciding if it starts a comment */
+#define SLCOMMENT 2 /* inside a // comment, omitting until newline */
+#define QUOTE 3     /* inside a "..." string literal */
+#define MLCOMMENT 4 /* inside a slash-star comment, omitting until star-slash */
+#define CHAR 5      /* inside a '...' character constant */
 int main()
 {
     int c;
-    int last = 0;
+    int last = 0; /* previous character, needed to detect a closing star-slash and a deferred slash */
     int is_escaped = 0;
     int state = PRINT;
     while ((c = getchar()) != EOF)
     {
         if (state == PRINT)
         {
+            /* a slash might just be division, or the start of // or a comment: hold off printing it */
             if (c == '/')
             {
                 state = SLASH;
@@ -96,6 +97,7 @@ int main()
                 state = MLCOMMENT;
             else
             {
+                /* turned out not to be a comment after all: print the held-back slash plus this char */
                 putchar(last);
                 putchar(c);
                 state = PRINT;
@@ -113,6 +115,7 @@ int main()
         }
         else if (state == MLCOMMENT)
         {
+            /* the closing marker just completed: end the comment, replacing it with one space */
             if (c == '/' && last == '*')
             {
                 putchar(' ');
@@ -120,6 +123,7 @@ int main()
             }
             else
                 state = MLCOMMENT;
+            /* preserve newlines inside the comment so line numbers downstream stay accurate */
             if (c == '\n')
                 putchar(c);
         }

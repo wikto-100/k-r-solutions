@@ -4,6 +4,7 @@ use it to reverse the input one line at a time.
 Author: Wiktor Stojek
 */
 #include <stdio.h>
+/* reverses str[0..len-1] in place, mirroring pairs of characters from both ends */
 void reverse(char str[], int len)
 {
     if (len <= 1)
@@ -13,8 +14,10 @@ void reverse(char str[], int len)
         // x y
         // y x
         // x y
+        /* skip swapping a trailing newline into the middle of the string */
         if (str[len - i - 1] == '\n')
             continue;
+        /* classic XOR swap of str[i] and str[len-i-1], no temp variable needed */
         str[i] ^= str[len - i - 1];
         str[len - i - 1] ^= str[i];
         str[i] ^= str[len - i - 1];

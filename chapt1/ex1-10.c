@@ -13,6 +13,7 @@ int main()
 
     while ((c = getchar()) != EOF)
     {
+        /* escape tab, backspace and backslash so they're visible in the output */
         if (c == '\t')
         {
             putchar('\\');

@@ -6,6 +6,7 @@ Author: Wiktor Stojek
 */
 #include <stdio.h>
 
+/* columns remaining from col to the next tab stop (tabs every 8 columns) */
 int tabspace(int col)
 {
     int tab = 8;
@@ -27,6 +28,7 @@ int main()
         }
         else if (c == ' ')
         {
+            /* defer emitting the blank: it might end up being the fold point instead */
             blank++;
         }
         else if (c == '\t')
@@ -35,13 +37,16 @@ int main()
         }
         else
         {
-            // if we add col + blank > n then we need to insert newline
+            /* fold point: accumulated blanks for this line + current column
+               would exceed the fold line (also when blank=0)
+               then need to fold */
             if (col + blank > n)
             {
                 col = 1;
                 blank = 0;
                 putchar('\n');
             }
+            /* no fold needed yet: now actually emit the pending blanks before this character */
             while (blank > 0)
             {
                 putchar(' ');

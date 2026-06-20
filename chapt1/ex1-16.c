@@ -6,6 +6,7 @@ Author: Wiktor Stojek
 #include <stdio.h>
 #include <stdlib.h>
 #define MAXLEN 16
+/* reads at most one MAXLEN-sized chunk of a line; may stop mid-line if it's longer */
 int _getline(char line[], int lim)
 {
 
@@ -23,6 +24,7 @@ int _getline(char line[], int lim)
 
     return len;
 }
+/* like strcpy: copy from[] into to[], including the terminating '\0' */
 void copy(char to[], char from[])
 {
     int i = 0;
@@ -32,6 +34,7 @@ void copy(char to[], char from[])
 int main()
 {
     char line[MAXLEN];
+    /* buf accumulates a possibly very long logical line across multiple _getline chunks */
     char *buf = malloc(MAXLEN);
     char *longest = malloc(MAXLEN);
     int cur_len = 0;
@@ -47,12 +50,14 @@ int main()
 
         if (last != '\n' && len == MAXLEN - 1)
         {
+            /* chunk filled the buffer without hitting a newline: line continues, append and keep reading */
             buf = realloc(buf, (cur_len + len + 1));
             copy((buf + cur_len), line);
             cur_len += len;
         }
         else
         {
+            /* line actually ended here: append the final chunk and compare against the longest seen */
             buf = realloc(buf, (cur_len + len + 1));
             copy((buf + cur_len), line);
 
@@ -70,6 +75,7 @@ int main()
     }
     if (cur_len > 0)
     {
+        /* input ended without a final newline; still check the leftover buffer */
         if (cur_len > ml)
         {
             ml = cur_len;

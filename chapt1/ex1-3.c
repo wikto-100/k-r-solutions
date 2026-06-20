@@ -13,9 +13,11 @@ int main()
     upper = 300; /* upper limit */
     step = 20;   /* step size */
     fahr = lower;
+    /* heading added above the table, per exercise */
     printf("Farentheit-Celsius Table\n");
     while (fahr <= upper)
     {
+        /* convert current Fahrenheit value to Celsius */
         celsius = (5.0 / 9.0) * (fahr - 32.0);
         printf("\t%3.0f %6.1f\n", fahr, celsius);
         fahr = fahr + step;

@@ -14,6 +14,7 @@ int main()
     printf("Celsius-Farentheit Table\n");
     while (fahr <= upper)
     {
+        /* fahr is iterated, celsius derived from it, but columns printed as celsius then fahr */
         celsius = (5.0 / 9.0) * (fahr - 32.0);
         printf("\t%3.0f %6.1f\n", celsius, fahr);
         fahr = fahr + step;

@@ -8,6 +8,7 @@ Author: Wiktor Stojek
 
 char main()
 {
+    /* \z is not a recognized escape sequence; compiler warns and prints it literally as 'z' */
     printf("Hello, world!\z");
 }
 /*
