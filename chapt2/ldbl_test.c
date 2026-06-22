@@ -9,6 +9,7 @@ so we know which bytes are the mantissa, which are the exponent+sign,
 and which are unused padding - then rebuilds each value
 from a byte array to confirm the layout is understood
 correctly before reusing the same trick in ex2-1.c.
+Author: Wiktor Stojek
 */
 #include <stdio.h>
 #include <float.h>
