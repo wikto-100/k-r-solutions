@@ -48,7 +48,7 @@ int main(void)
     int /**/ value = 3;
     char ccc = '//';
     int x = 10 / '/';
-    int x = 10/'/';
+    int x = 10 / '/';
 
     printf("\\"); // remove this comment
     /*
