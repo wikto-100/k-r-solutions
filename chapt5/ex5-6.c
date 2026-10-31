@@ -74,24 +74,112 @@ void itoa(int n, char *s)
     *p = '\0';
     reverse(s);
 }
-int strindex(char *s, char *t)
+int strindex_ptr(char *s, char *t)
 {
-    int i, j, k;
+    char *s_ptr, *t_ptr;
+
     int n, m;
-    n = 0;
-    m = 0;
-    while (s[n] != '\0')
-        ++n;
-    while (t[m] != '\0')
-        ++m;
-    for (i = n - 1; i >= 0; i--)
+    n = m = 0;
+    s_ptr = s;
+    t_ptr = t;
+    while (*s_ptr)
     {
-        for (j = i, k = m - 1; k >= 0 && j >= 0 && s[j] == t[k]; j--, k--)
-            ;
-        if (k == -1)
-            return i - m + 1;
+        n++;
+        s_ptr++;
+    }
+    while (*t_ptr)
+    {
+        m++;
+        t_ptr++;
+    }
+    if (m == 0)
+        return n;
+    if (m > n)
+        return -1;
+    reverse(s);
+    reverse(t);
+    int match = 0;
+    char *s_beg = s;
+    while (*s)
+    {
+        match = 0;
+        for (t_ptr = t, s_ptr = s; *s_ptr && *t_ptr; s_ptr++, t_ptr++)
+        {
+            if (*t_ptr == *s_ptr)
+                match++;
+            else
+                match = 0;
+            if (match == m)
+            {
+                reverse(s_beg);
+                reverse(t);
+                return n - (s_ptr - s_beg) - 1;
+            } // what index was t found in s
+        }
+        s++;
+    }
+
+    reverse(s_beg);
+    reverse(t);
+    return -1;
+}
+int strrindex_ptr(const char *s, const char *t)
+{
+    const char *s_end;
+    const char *t_end = t;
+    const char *start;
+    const char *tp, *sp;
+
+    for (s_end = s; *s_end; s_end++)
+        ;
+    for (t_end = t; *t_end; t_end++)
+        ;
+
+    if (/*length of t == 0*/ t_end == t)
+        return (int)(s_end - s);
+    if (/*length of s < length of t*/ (s_end - s) < (t_end - t))
+        return -1;
+
+    for (/*start looking where t would begin in s*/ start = s_end - (t_end - t); start >= s; start--)
+    {
+        sp = start;
+        tp = t;
+        while (*tp && *tp == *sp)
+        {
+            tp++;
+            sp++;
+        }
+
+        if (tp == t_end)             // if we got to the end of t with the while loop
+            return (int)(start - s); // the index is at start in s (where t begins in s)
+
+        if (/* because the loop condition checks the first character*/ start == s)
+            break;
     }
     return -1;
+}
+int sbuf;
+int pushed;
+// getch, ungetch implementation
+int getch()
+{
+    if (pushed)
+    {
+        pushed = 0;
+        return sbuf;
+    }
+    else
+        return getchar();
+}
+void ungetch(int c)
+{
+    if (pushed)
+        printf("ungetch():\ttoo many characters\n");
+    else
+    {
+        pushed = 1;
+        sbuf = c;
+    }
 }
 int getop(char *s)
 {
@@ -147,12 +235,21 @@ int main()
     void afree(char *);
     char *line = alloc(MAXLINE);
     char *line2 = alloc(MAXLINE);
-    get_line(line, MAXLINE);
-    int num = atoi(line);
-    itoa(num, line2);
-    printf("line=%s num=%d\n", line, num);
-    printf("itoa(line)=%s\n", line2);
 
+    char *itoares = alloc(MAXLINE);
+    get_line(line, MAXLINE);
+    get_line(line2, MAXLINE);
+
+    int num = atoi(line);
+
+    itoa(num, itoares);
+    printf("line=%s num=%d\n", line, num);
+    printf("itoa(line)=%s\n", itoares);
+    int found = strindex_ptr(line, line2);
+    printf("found= %d\n", found);
+    found = strrindex_ptr(line, line2);
+    printf("found= %d\n", found);
+    afree(itoares);
     afree(line2);
     afree(line);
 }
